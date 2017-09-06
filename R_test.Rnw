@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\begin{document}
+
+This program tests whether we have Rstudio, R, LaTeX, and knitr working.
+
+The quadratic formula:
+
+\[
+x = \frac{-b\pm\sqrt{b^2-4ac}}{2a}
+\]
+
+<<>>=
+y = rbeta(1000,2,2)       #draw 1000 observations from a beta(2,2) distribution
+
+hist(y)                   #plot a histogram
+
+@
+
+
+\end{document}
