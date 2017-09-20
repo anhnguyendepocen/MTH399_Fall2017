@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+\section*{Generative Models}
+
+\subsection*{The Bayesian paradigm for statistics}
+An important feature of the Bayesian paradigm for statistics is that Bayesian models are usually \textbf{generative}, which means they specify a way to simulate underlying data generation process.
+
+This allows us to validate the model (remember George Box's famous dictum that all models are wrong) by generating data using the model and comparing it to actual data.
+
+A Bayesian model requires two components:
+\begin{itemize}
+\item The \textbf{likelihood}: A collection of probability models for the outcome, indexed by a parameter
+\item The \textbf{prior}: A probability model for our current state of knowledge about the value of the parameter
+\end{itemize}
+
+\subsection*{Example: predicting the outcome of a baseball game}
+Suppose we want to predict the outcome of a single baseball game, say the Red Sox vs the Yankees.
+
+We will model the game as a Bernoulli trial, that is, a probability experiment with two possible outcomes:
+\begin{itemize}
+\item 'R'  The Red Sox win
+\item 'Y'  The Yankees win
+\end{itemize}
+
+The likelihood part of the model has a single parameter $\theta$ and can be written as:
+\[
+f(x) = \theta^x(1-\theta)
+\]
+
+Without loss of generality, we will interpret the parameter $\theta$ as the probability of outcome 'R'.  
+
+In this case the Kolmogorov axioms dictate that the probability of the outcome 'Y' must be $1-\theta$.
+
+The other part of our Bayesian model is the \textbf{prior}, which you can think of as a probability model that reflects our current state of knowledge about the parameter $\theta$ (current meaning \textit{before} we see the data at hand).
+
+One commonly chosen prior in this situation is the \textbf{uniform} distribution, for which the probability of $\theta$ falling in the subinterval $[a,b]$ of $[0,1]$ is just $b-a$.
+
+This simple assumption encodes a lot of information about the distribution of $\theta$:
+\begin{itemize}
+\item The probability that $\theta$ is between 0 and 0.1 is 0.1
+\item The probability that $\theta$ is between .45 and .55 is 0.1
+\item The probability that $\theta$ is between .5 and .75 is 0.25
+\item The probability that $\theta$ is between .99 and 1 is 0.01
+\item etc. etc. etc.
+\end{itemize}
+
+\subsection*{Generating Data}
+
+With the prior and likelihood defined, we can generate data with the following two-stage process:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item Step 1:  Choose a value for $\theta$ (draw a sample of size 1 from the prior)
+\item Step 2:  Use the chosen value of $\theta$ to draw a sample of 1 from the likelihood distribution with paramter value equal to $\theta$
+\end{itemize}
+
+The R code for this is:
+
+<<>>=
+theta = runif(1)            #simulate a sample of size 1 from a uniform distribution
+y     = rbinom(1,1,theta)   #simulate a Bernoulli trial with parameter theta
+
+theta
+y
+
+@
+
+We can repeat the process to generate as much data as we want.  
+\par\vspace{0.3 cm}
+Suppose we want to simulate 50 games.  
+\par\vspace{0.3 cm}
+If you are familiar with any programming languages, your first instinct is to write a loop of some kind, but R allows you to avoid this in most cases.
+\par\vspace{0.3 cm}
+The code to simulate 50 games is:
+
+<<>>=
+theta = runif(50)
+y     = rbinom(50,1,theta)
+
+theta
+y
+@
+
+\subsection*{Exercise}
+
+Write R code to simulate 100,000 games (suggestion: remove the statements that print $\theta$ and y)
+
+Use the R function \texttt{hist(theta)} to draw a histogram of the 100,000 theta values
+
+Use the R function \texttt{table(y)} to print a frequency table of the y values
+
+<<>>=
+theta = runif(100000)
+y     = rbinom(100000,1,theta)
+
+hist(theta)
+
+table(y)
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}

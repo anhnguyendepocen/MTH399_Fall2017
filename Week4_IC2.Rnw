@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+\section*{Generative Models (continued)}
+
+\subsection*{Characteristics of the generative model for a Bernoulli trial}
+Previously we proposed a generative model for the outcome of a baseball game (between the Red Sox and Yankees) as:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item A Bernoulli model for the likelihood, that is, a family of Bernoulli distributions indexed by a single parameter $\theta$, with likelihood function $\theta^x(1-\theta)^{1-x}$
+\item A uniform distribution as the model for our initial state of knowledge about $\theta$ (the prior) 
+\end{itemize}
+\par\vspace{0.3 cm}
+\subsubsection*{The likelihood component}
+The probability distribution associated with the likelihood, the Bernoulli distribution, corresponds to a probability experiment with two outcomes. In this setting we will denote them as 'R' and 'Y' corresponding to a win by the Red Sox and a win by the Yankees, respectively.
+\par\vspace{0.3 cm}
+When the experiment is performed (i.e., the game is played),
+\begin{itemize}
+\item With probability $\theta$, the outcome 'R' is observed.  The random variable $x$ is assigned a value of $1$.
+\item With probability $1-\theta$, the outcome 'Y' is observed. The random variable $x$ is assigned a value of $0$.
+\end{itemize}
+\subsubsection*{The prior component}
+The prior component is a probability distribution representing our initial state of knowledge about the value of the parameter $\theta$.  In this case we are using the uniform distribution as the prior.
+\par\vspace{0.3 cm}
+The uniform distribution corresponds to the experiment of randomly choosing a number between $0$ and $1$ in such a way that the probability of the number falling in any subinterval $[a,b]$ is $b-a$.
+\par\vspace{0.3 cm}
+\subsubsection*{The data generation process}
+
+\par\vspace{0.3 cm}
+Once the likelihood and prior(s) are defined, the generative model can produce data by repeating a two-stage process:
+\begin{itemize}
+\item Step 1:  Draw a value of $\theta$ (a sample of size 1 from the prior distribution)
+\item Step 2:  Draw a value of $x$ from the distribution associated with the likelihood (the Bernoulli distribution)
+\end{itemize}
+
+\subsection*{Generating Data}
+
+With the prior and likelihood defined, we can generate data with the following two-stage process:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item Step 1:  Choose a value for $\theta$ (draw a sample of size 1 from the prior)
+\item Step 2:  Use the chosen value of $\theta$ to draw a sample of 1 from the likelihood distribution with paramter value equal to $\theta$
+\end{itemize}
+
+The R code for simulating a single game:
+
+<<>>=
+theta = runif(1)            #simulate a sample of size 1 from a uniform distribution
+y     = rbinom(1,1,theta)   #simulate a Bernoulli trial with parameter theta
+
+theta
+y
+
+@
+
+To model the behavior over time, we examine a large number of simulated games. 
+
+\par\vspace{0.3 cm}
+The code to simulate 10,000 games is:
+
+<<>>=
+theta = runif(4000)
+y     = rbinom(4000,1,theta)
+@
+
+We can examine the distribution of $\theta$ values under the prior with a histogram:
+
+<<>>=
+hist(theta)
+@
+
+We can examine the distribution of outcomes by listing a table of values for the random variable:
+
+<<>>=
+table(y)
+@
+
+\subsection*{Exercise}
+
+Our model essentially predicts that the outcomes 'R' and 'Y' are equally likely.  
+\par\vspace{0.3 cm}
+This is a consequence of the fact that the mean of the prior is $0.5$.
+\par\vspace{0.3 cm}
+In Bayesian statistics, parameters are treated as random variables with distributions.
+\par\vspace{0.3 cm}
+Two important characteristics are the mean and standard deviation.
+\par\vspace{0.3 cm}
+Write R code to compute the mean and standard deviation of the prior distribution of $\theta$.
+\par\vspace{0.3 cm}
+Use the R functions \texttt{mean()} and \texttt{sd()} to compute these.  Use the data generated above for theta.  The R code is \texttt{mean(theta)} and \texttt{sd(theta)}
+<<>>=
+#R code for mean and standard deviation of theta
+@
+A more detailed examination includes an examination of the percentiles of the distribution.  
+\par\vspace{0.3 cm}
+By default, Stan prints the following percentiles: .025, .25, .5, .75, .975
+\par\vspace{0.3 cm}
+We will use the R \texttt{quantiles()} function applied to theta.
+\par\vspace{0.3 cm}
+The coding in this case is:  \texttt{quantile(theta,c(.025,.25,.5,.75,.975))}
+<<>>=
+#R code for quantiles of theta
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
