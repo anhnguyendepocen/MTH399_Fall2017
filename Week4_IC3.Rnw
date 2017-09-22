@@ -47,7 +47,7 @@ The final piece is the data values.  In this case, we will use the fact that the
 \par\vspace{0.3 cm}
 We will represent this as a vector of 10 ones and 6 zeros.
 <<>>=
-y = c(1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0)    #16 zeros and ones
+y = c(rep(1,10),rep(0,6))    #10 ones followed by six zeros (order is irrelevant)
 N = length(y)
 @
 
@@ -74,9 +74,38 @@ The posterior is a compromise between the data and the prior.
 \par\vspace{0.3 cm}
 Another way to think of it is that the posterior reflects what we learned from the data given our prior.
 
+\subsection{Exercise}
+
+These two teams have been playing each other for more than 100 years and have played more than 2,000 games.
+\par\vspace{0.3 cm}
+See if you can find the total number of wins for each team, and use that data to rerun the Stan model
+\par\vspace{0.3 cm}
+For 10 Red Sox wins and 6 Yankees wins, the code to set the data up was:
+\par\vspace{0.3 cm}
+\texttt{y = c(rep(1,10),rep(0,6))}
+\texttt{N = lengty(y)}
+\par\vspace{0.3 cm}
+See if you can adapt this code to generate the data vector for the 100 years data, and type it into the code block below.
 <<>>=
-yp = rbinom(length(pd$theta),1,pd$theta)
-table(yp)
+# code to generate y and N for 100 years data
+@
+
+\par\vspace{0.3 cm}
+Then re-execute the call to Stan (copied below for your convenience)
+<<>>=                                      #standard setup for Stan
+library(rstan)
+library(bayesplot)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+stanfit = stan("Bernoulli.stan")         #call stan to fit the model
+
+print(stanfit)                           #print a summary of the results
+
+pd=extract(stanfit)
+hist(pd$theta)
+@
+
 <<>>=
 Sys.info()[["user"]]
 @
