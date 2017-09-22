@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+\section*{The Bayes equation and posterior distribution}
+
+\subsection*{Characteristics of the generative model for a Bernoulli trial}
+Previously we proposed a generative model for the outcome of a baseball game (between the Red Sox and Yankees) as:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item A Bernoulli model for the likelihood, that is, a family of Bernoulli distributions indexed by a single parameter $\theta$, with likelihood function $\theta^x(1-\theta)^{1-x}$
+\item A uniform distribution as the model for our initial state of knowledge about $\theta$ (the prior) 
+\end{itemize}
+\par\vspace{0.3 cm}
+
+\subsection*{Data generation}
+
+We generated 4,000 observations from the prior distribution, and examined the mean, standard deviation, and quantiles of the prior:
+
+<<>>=
+theta_prior  =  runif(4000)
+mean(theta_prior)
+sd(theta_prior)
+quantile(theta_prior,c(.025,.25,.5,.75,.975))
+y = rbinom(4000,1,theta_prior)
+table(y)
+@
+
+The final component of a Bayesian model is data.  
+\par\vspace{0.3 cm}
+The Bayesian paradigm for statistical inference has three components:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item The prior distribution for $f(\theta)$ 
+\item The likelihood distribution, indexed by $f(x|\theta)$
+\item The posterior distribution for $f(\theta|x)$
+\end{itemize}
+\par\vspace{0.3 cm}
+The relationship between these components is called the Bayes equation:
+\[
+f(\theta|x) \propto f(x|\theta)\cdot f(\theta)
+\]
+\par\vspace{0.3 cm}
+In most cases, computational methods like Stan are necessary to solve this equation.
+\par\vspace{0.3 cm}
+The final piece is the data values.  In this case, we will use the fact that the last 16 games between the Red Sox and Yankees resulted in 10 wins for the Red Sox and six for the Yankees.
+\par\vspace{0.3 cm}
+We will represent this as a vector of 10 ones and 6 zeros.
+<<>>=
+y = c(1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0)    #16 zeros and ones
+N = length(y)
+@
+
+Now we call Stan to draw a sample from the posterior distribution
+
+<<>>=                                      #standard setup for Stan
+library(rstan)
+library(bayesplot)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+stanfit = stan("Bernoulli.stan")         #call stan to fit the model
+
+print(stanfit)                           #print a summary of the results
+
+pd=extract(stanfit)
+hist(theta_prior)
+hist(pd$theta)
+@
+
+The posterior distribution represents the revised state of our knowledge about the parameter $\theta$ given the data we observed.
+\par\vspace{0.3 cm}
+The posterior is a compromise between the data and the prior.
+\par\vspace{0.3 cm}
+Another way to think of it is that the posterior reflects what we learned from the data given our prior.
+
+<<>>=
+yp = rbinom(length(pd$theta),1,pd$theta)
+table(yp)
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
