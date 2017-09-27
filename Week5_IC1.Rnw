@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+\section*{Continuous Distributions Tour}
+
+\subsection*{Overview}
+In this exercise we will explore three continuous probability distributions that are widely used as both likelihood distributions and priors.
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item The \textbf{normal} or Gaussian distribution takes values on $(-\infty,\infty)$
+\item The \textbf{gamma} distribution takes values on $(0,\infty)$
+\item The \textbf{beta} distribution takes values on $(0,1)$
+\end{itemize}
+\par\vspace{0.3 cm}
+
+\subsection*{The Gaussian or normal distribution}
+
+The Gaussian is the most widely used distribution model in statistics.  It is also called the "bell curve" because of the distinctive shape of the graph of its density function.
+\par\vspace{0.3 cm}
+We will think of the Gaussian as a family of distributions indexed by two parameters, usually designated $\mu$ and $\sigma$, called the \textbf{mean} and \textbf{standard deviation}.
+\par\vspace{0.3 cm}
+The mean is the $x$-coordinate of the peak of the bell curve, so it tells us where the distribution is centered.  This type of parameter is called a \textbf{location} parameter because it tells us where the center is located.
+\par\vspace{0.3 cm}
+The standard deviation is a type of parameter known as \textbf{dispersion}.  As the name suggests, the standard deviation is a measure of how spread-out the data is about the mean (i.e., how widely dispersed).
+\par\vspace{0.3 cm}
+Unfortunately the usual method of finding the probability that a continuous random variable lies in an interval, integrating the density function over that interval, does not work with the Gaussian because its density doesn't have an antiderivative.
+\par\vspace{0.3 cm}
+In the days before personal computers and software like R, every statistics text had a table of normal probabilities in the back.  Fortunately, we have much better ways to obtain this kind of information.
+\par\vspace{0.3 cm}
+The special case of mean zero and standard deviation one is called the \textbf{standard normal} distribution.
+\par\vspace{0.3 cm}
+Like most distributions implemented in R, there are four main functions for computing aspects of the normal distribution:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item \texttt{dnorm(x,mu,sigma)} Compute the value of the density function (not very useful for us)
+\item \texttt{pnorm(x,mu,sigma)} Compute the probability of a value less than or equal to $x$
+\item \texttt{qnorm(p,mu,sigma)} Compute the $p^{th}$ quantile of the distribution
+\item \texttt{rnorm(n,mu,sigma)} Simulate n observations from a Guassian distribution
+\end{itemize}
+\par\vspace{0.3 cm}
+For more information, see the \href{https://en.wikipedia.org/wiki/Normal_distribution}{Wikipedia page}
+
+\subsection*{Exercises}
+Suppose $x$ has a Gaussian distribution with parameters $\mu=100$ and $\sigma=15$. Compute the following:
+\begin{itemize}
+\item The probability that $x\leq\mu$
+\item The probability that $x\leq 105$
+\item The $90^{th}$ percentile of the distribution
+\item The median of the distribution
+\item The probability that $x$ is greater than $95$
+\item The probability that $x$ lies between $90$ and $110$
+\end{itemize}
+
+<<>>=
+# R code goes here
+
+@
+\subsection*{The gamma distribution}
+
+The gamma distribution is a continuous distribution with support on $(0,\infty).  (We'll define the \textbf{support} of a distribution is the portion of the $x$ axis where the density function is positive)
+\par\vspace{0.3 cm}
+As before, we think of the gamma as a family of distributions indexed by two parameters, usually designated $\alpha$ and $\beta$, called the \textbf{shape} and \textbf{scale} parameters.
+\par\vspace{0.3 cm}
+The mean of a gamma distribution is $\alpha/\beta$.
+\par\vspace{0.3 cm}
+The variance of a gamma distribution, which is the square of the standard deviation, is $\alpha/\beta^2$.
+\par\vspace{0.3 cm}
+Like most distributions implemented in R, there are four main functions for computing aspects of the gamma distribution:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item \texttt{dgamma(x,alpha,beta)} Compute the value of the density function (not very useful for us)
+\item \texttt{dgamma(x,alpha,beta)} Compute the probability of a value less than or equal to $x$
+\item \texttt{qgamma(p,alpha,beta)} Compute the $p^{th}$ quantile of the distribution
+\item \texttt{rgamma(n,alpha,beta)} Simulate n observations from a gamma distribution
+\end{itemize}
+\par\vspace{0.3 cm}
+For more information, see the \href{https://en.wikipedia.org/wiki/Gamma_distribution}{Wikipedia page}
+\subsection*{Exercises}
+Suppose $x$ has a gamma distribution with parameters $\alpha=10$ and $\beta=5$. Compute the following:
+\begin{itemize}
+\item The probability that $x\leq 4$
+\item The probability that $x\leq 2$
+\item The $90^{th}$ percentile of the distribution
+\item The median of the distribution
+\item The probability that $x$ is greater than $5$
+\item The probability that $x$ lies between $4$ and $6$
+\end{itemize}
+
+<<>>=
+#R code goes here
+@
+
+\subsection*{The gamma distribution}
+
+The beta distribution is a continuous distribution with support on $(0,1)$.
+\par\vspace{0.3 cm}
+As before, we think of the beta as a family of distributions indexed by two parameters, usually designated $\alpha$ and $\beta$, called the \textbf{shape} parameters.
+\par\vspace{0.3 cm}
+The mean of a beta distribution is $\alpha/(\alpha+\beta)$.
+\par\vspace{0.3 cm}
+Like most distributions implemented in R, there are four main functions for computing aspects of the beta distribution:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item \texttt{dbeta(x,alpha,beta)} Compute the value of the density function (not very useful for us)
+\item \texttt{dbeta(x,alpha,beta)} Compute the probability of a value less than or equal to $x$
+\item \texttt{qbeta(p,alpha,beta)} Compute the $p^{th}$ quantile of the distribution
+\item \texttt{rbeta(n,alpha,beta)} Simulate n observations from a beta distribution
+\end{itemize}
+\par\vspace{0.3 cm}
+For more information, see the \href{https://en.wikipedia.org/wiki/Beta_distribution}{Wikipedia page}
+\subsection*{Exercises}
+Suppose $x$ has a beta distribution with parameters $\alpha=10$ and $\beta=5$. Compute the following:
+\begin{itemize}
+\item The probability that $x\leq 0.4$
+\item The probability that $x\leq 0.2$
+\item The $90^{th}$ percentile of the distribution
+\item The median of the distribution
+\item The probability that $x$ is greater than $0.5$
+\item The probability that $x$ lies between $0.4$ and $0.6$
+\end{itemize}
+
+<<>>=
+#R code goes here
+@
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
