@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+\section*{Gaussian distribution: single sample inference}
+
+\subsection*{Overview}
+In this exercise we will explore inference with a single sample Gaussian distribution with unknown mean $\mu$ and standard deviation $\sigma$. 
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item Generate a sample of normal data
+\item Use a generic Stan model file \texttt{normal.stan} to specify the model to Stan
+\item Use Stan to produce a draw from the joint posterior distribution of $\mu$ and $\sigma$
+\item Obtain point estimates of $\mu$ and $\sigma$
+\item Obtain 95\% credible intervals for $\mu$ and $\sigma$
+\item Test the hypothesis that $\mu$ is less than or equal to a specific value
+\item Test the hypothesis that $\sigma$ is less than or equal to a specific value
+\end{itemize}
+\par\vspace{0.3 cm}
+
+\subsection*{Data generation}
+
+We will simulate a sample of 200 observations drawn from a Gaussian distribution with mean $\mu$=500 and $\sigma$=100.
+\par\vspace{0.3 cm}
+We will use the \texttt{rnorm(N,mu,sigma)} function to generate the data vector.
+\par\vspace{0.3 cm}
+One of the functions of the Stan model file \texttt{normal.stan} is to tell Stan what variables to extract from R.
+\par\vspace{0.3 cm}
+Examine the \texttt{data} block of the \texttt{normal.stan} file to determine the variable names Stan is expecting for the data vector and its length.
+\par\vspace{0.3 cm}
+<<>>=
+set.seed(12345)
+@
+Modify the R code in the following code block to match the names R is expecting:
+<<>>=
+dname = rnorm(200,500,100)    #the data vector passed to Stan
+lname = length(dname)         #the length of the data vector
+@
+\par\vspace{0.3 cm}
+
+<<>>=                                      #standard setup for Stan
+library(rstan)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+stanfit = stan("normal.stan")         #call stan to fit the model
+
+print(stanfit)                           #print a summary of the results
+@
+
+<<>>=
+pd=extract(stanfit)
+str(pd)
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
