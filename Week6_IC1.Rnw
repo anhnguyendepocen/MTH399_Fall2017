@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+\section*{Inference with Gaussian data}
+
+\subsection*{Arctic tern weights}
+A study of arctic terns captured, weighed, and released 163 birds.
+\par\vspace{0.3 cm}
+The weights (in grams) are stored in a comma separated values file called \texttt{arctic\_tern\_weights.csv}.
+\par\vspace{0.3 cm}
+Previous studies have found that weights of individual birds average between 100 and 110 grams with a standard deviation of between 8 and 15 grams.
+\par\vspace{0.3 cm}
+Use the R function \texttt{read.csv()} to read the data.   You can assign the resulting data frame any name you want.
+\par\vspace{0.3 cm}
+<<>>=
+#    Put the read.csv code here
+
+@
+
+<<>>=
+#    Apply the str() function to discover the column names in the .csv file
+
+@
+
+
+You can use the Stan model file \texttt{normal.stan} as a template.
+\par\vspace{0.3 cm}
+To set up the call to Stan, you can use the \texttt{str()} function to discover the names of the columns in the data frame.
+\begin{itemize}
+\item Make a copy of the data vector read from the \texttt{.csv} file with a name that matches the name in the model file.
+\item Create any other variables required by the model file.
+\end{itemize}
+\par\vspace{0.3 cm}
+<<>>=
+#    Put the code to define the variables required by normal.stan
+
+@
+
+Standard setup and call to stan plus extraction of posterior draw
+
+<<>>=
+library(rstan)              
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+stanfit = stan('normal.stan')
+
+pd = extract(stanfit)
+@
+
+Now use the posterior draw \texttt{pd} to perform the following analyses:
+
+\begin{itemize}
+\item Obtain a point estimate for the mean parameter $\mu$.
+\item Obtain a point estimate for the standard deviation $\sigma$
+\item Obtain a 95\% credible interval for $\mu$
+\item Obtain a 95\% credible interval for $\sigma$
+\item Test the hypothesis that the mean weight $\mu$ is greater than 105 grams
+\item Test the hypothesis that the standard deviation $\sigma$ is less than 10
+\end{itemize}
+
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
