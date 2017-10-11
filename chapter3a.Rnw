@@ -1,0 +1,204 @@
+\documentclass{article}
+
+\begin{document}
+
+
+\title{Introduction to Classical Linear Models}
+\maketitle
+
+Body Measurements data
+
+This data can be found at:
+
+\texttt{https://ww2.amstat.org/publications/jse/v11n2/datasets.heinz.html}
+\par\vspace{0.4 cm}
+The data is in the form of a table, with values separated by spaces.
+
+The appropriate R function for reading this type of data is \texttt{read.table()}.
+
+The dataset has no column names, so R will generate them as V1, V2, V3, ...
+
+We will make copies of the columns we want to analyze and give them meaningful names.
+
+<<>>=
+df <- read.table('body.dat.txt')
+
+str(df)
+
+gender = df$V25    #gender
+hcm    = df$V24    #height in centimeters
+wkg    = df$V23    #weight in kilograms
+
+@
+
+%\end{document}
+
+\subsection*{Data Exploration}
+
+The first step in any data project that involves data analysis is to familiarize yourself with the data.
+
+You can learn a lot by looking at a graph of the data and doing boxplots.
+
+These require very little effort to generate.
+<<>>=
+plot(wkg)
+
+boxplot(wkg~gender)
+@
+%\end{document}
+\subsection*{mean only}
+\begin{itemize}
+\item $Y$ is weight in kilograms
+\item $X$ is a vector of all ones
+\item $e$ is a vector of independent $N(0,\sigma_e)$ random variables
+\end{itemize}
+\par\vspace{0.4 cm}
+\[
+Y = \beta_0 + e
+\]
+<<>>=
+mean(wkg)
+
+all_ones <- rep(1,length(wkg))
+
+lm4 <- lm(wkg ~ all_ones -1)
+
+print(lm4)
+
+summary(lm4)
+
+plot(lm4$fitted.values~hcm)
+@
+
+\end{document}
+
+\subsection*{simple regression}
+\begin{itemize}
+\item $Y$ is weight in kilograms
+\item $X$ is height in centimeters
+\item $e$ is a vector of independent $N(0,\sigma_e)$ random variables
+\end{itemize}
+\par\vspace{0.4 cm}
+\[
+Y = \beta_0 + \beta_1X + e
+\]
+
+<<>>=
+lm1 <- lm(wkg ~ hcm)
+
+print(lm1)
+
+summary(lm1)
+
+plot(lm1$fitted.values~hcm)
+@
+
+\subsection*{one-way anova with two levels}
+\begin{itemize}
+\item $Y$ is weight in kilograms
+\item $X_1$ is $1$ if gender=0, $0$ if gender=1
+\item $X_2$ is $0$ if gender=0, $1$ if gender=1
+\item $e$ is a vector of independent $N(0,\sigma_e)$ random variables
+\end{itemize}
+\par\vspace{0.4 cm}
+\[
+Y = \beta_1X_1 + \beta_2X_2 + e
+\]
+<<>>=
+lm2 <- lm(wkg ~ as.factor(gender))
+
+print(lm2)
+
+summary(lm2)
+
+aov2 <-  aov(wkg ~ as.factor(gender))
+
+print(aov2)
+
+summary(aov2)
+
+boxplot(lm2$fitted.values~gender)
+@
+
+\subsection*{one-way acnova with two levels and one covariate}
+\begin{itemize}
+\item $Y$ is weight in kilograms
+\item $X$ is height in centimeters
+\item $X_1$ is $1$ if gender=0, $0$ if gender=1
+\item $X_2$ is $0$ if gender=0, $1$ if gender=1
+\item $e$ is a vector of independent $N(0,\sigma_e)$ random variables
+\end{itemize}
+\par\vspace{0.4 cm}
+\[
+Y = \beta_1X_1 + \beta_2X_2 + \beta X + e
+\]
+<<>>=
+lm3 <- lm(wkg ~ hcm + as.factor(gender))
+
+print(lm3)
+
+summary(lm3)
+
+aov3 <-  aov(wkg ~ hcm + as.factor(gender))
+
+print(aov3)
+
+summary(aov3)
+
+plot(lm3$fitted.values~hcm)
+@
+
+\subsection*{mean only}
+\begin{itemize}
+\item $Y$ is weight in kilograms
+\item $X$ is a vector of all ones
+\item $e$ is a vector of independent $N(0,\sigma_e)$ random variables
+\end{itemize}
+\par\vspace{0.4 cm}
+\[
+Y = \beta_0 + e
+\]
+<<>>=
+all_ones <- rep(1,length(wkg))
+
+lm4 <- lm(wkg ~ all_ones -1)
+
+print(lm4)
+
+summary(lm4)
+
+plot(lm4$fitted.values~hcm)
+@
+
+\subsection*{one-way acnova with two levels and one covariate, unequal slopes}
+\begin{itemize}
+\item $Y$ is weight in kilograms
+\item $X$ is height in centimeters
+\item $X_1$ is $1$ if gender=0, $0$ if gender=1
+\item $X_2$ is $0$ if gender=0, $1$ if gender=1
+\item $e$ is a vector of independent $N(0,\sigma_e)$ random variables
+\end{itemize}
+\par\vspace{0.4 cm}
+\[
+Y = \beta_1(X_1 + \beta_mX) + \beta_2(X_2 + \beta_fX) + e
+\]
+<<>>=
+lm5 <- lm(wkg ~ hcm*as.factor(gender))
+
+print(lm5)
+
+summary(lm5)
+
+
+aov5 <-  aov(wkg ~ hcm*as.factor(gender))
+
+print(aov5)
+
+summary(aov5)
+
+plot(lm5$fitted.values~hcm)
+@
+
+
+
+\end{document}
