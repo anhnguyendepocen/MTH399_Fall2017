@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\begin{document}
+
+In this exercise we will generate data using:
+\begin{itemize}
+\item A binomial likelihood function with parameters $n$ and $\theta$.
+\item A Poisson prior for $n$ with parameter 10.
+\item A beta prior for $\theta$ with parameters (3,3).
+\end{itemize}
+
+
+Step 1: generate a sample of 4000 values for the $\n$ parameter from a Poisson(15) distribution.
+
+<<>>=
+N = 4000
+
+n = #fill in the code here
+
+table(n)
+
+hist(n)
+@
+
+Step 2: generate a sample of 4000 values for the $\theta$ parameter from a beta(3,3) distribution.
+
+<<>>=   
+theta = #fill in the code here
+
+hist(theta)
+
+summary(theta)
+@
+
+Step 3: Generate a vector $y$ of binomial data values using the conditional likelihood $f(y | n,\theta)$, a binomial distribution with $n$ trials and probability of success $\theta$.
+
+The flexibility of R allows us to avoid using a for loop.
+
+<<>>=
+y = #fill in the code here
+
+hist(y)
+
+table(y)
+
+summary(y)
+
+mean(y)
+
+sd(y)
+@
+
+Step 4: find 95\% and 50\%confidence intervals for $y$.
+
+<<>>=
+quantile(#fill in the code for the 95% confidence interval)
+quantile(#fill in the code for the 50% confidenct interval
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+\end{document}

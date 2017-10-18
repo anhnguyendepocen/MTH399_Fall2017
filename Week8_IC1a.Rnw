@@ -1,0 +1,67 @@
+\documentclass{article}
+
+\begin{document}
+
+In this exercise we will generate data using:
+\begin{itemize}
+\item A normal likelihood function with parameters $\mu$ and $\sigma$.
+\item A normal prior for $\mu$ with mean 0 and standard deviation 100: $N(0,100)$.
+\item A half-cauchy prior for $\sigma$ with parameters 0 and 10.
+\end{itemize}
+
+
+Step 1: generate a sample of 4000 values for the $\mu$ parameter from a normal(0,100) distribution.
+
+<<>>=
+N = 4000
+
+mu = rnorm(N,0,100)
+
+hist(mu)
+@
+
+\end{document}
+
+Step 2: generate a sample of 4000 values for the $\sigma$ parameter from a cauchy(0,10) distribution.
+
+Take the absolute value to ensure nonnegative values.
+
+<<>>=   
+sigma = abs(rcauchy(N,0,10))
+
+hist(sigma)
+
+summary(sigma)
+@
+
+\end{document}
+
+Step 3: Generate a vector of data values using the conditional likelihood $f(y | \mu,\sigma)$.
+
+The flexibility of R allows us to avoid using a for loop.
+
+<<>>=
+y = rnorm(N,mu,sigma)
+
+hist(y)
+
+summary(y)
+
+mean(y)
+
+sd(y)
+@
+
+\end{document}
+
+Step 4: find 95\% and 50\%confidence intervals for $y$.
+
+<<>>=
+quantile(y,c(.025,.975))
+quantile(y,c(.25,.75))
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+\end{document}

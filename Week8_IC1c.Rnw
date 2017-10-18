@@ -1,0 +1,52 @@
+\documentclass{article}
+
+\begin{document}
+
+In this exercise we will generate data using:
+\begin{itemize}
+\item A Poisson likelihood function with parameter $\lambda$.
+\item A gamma prior for $\lambda$ with parameters (10,0.2)
+\end{itemize}
+
+
+Step 1: generate a sample of 4000 values for the $\lambda$ parameter from a gamma(10,0.2) distribution.
+
+<<>>=
+N = 4000
+
+lambda = #fill in the code here
+
+hist(lambda)     #draw a histogram of lambda
+
+summary(lambda)  #summary of lambda values
+@
+
+Step 3: Generate a vector $y$ of Poisson data values using the conditional likelihood $f(y | \lambda)$, a Poisson  distribution with parameter $\lambda$.
+
+The flexibility of R allows us to avoid using a for loop.
+
+<<>>=
+y = #fill in the code here
+
+hist(y)
+
+table(y)
+
+summary(y)
+
+mean(y)
+
+sd(y)
+@
+
+Step 4: find 95\% and 50\%confidence intervals for $y$.
+
+<<>>=
+quantile(#fill in the code for the 95% confidence interval)
+quantile(#fill in the code for the 50% confidenct interval
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+\end{document}
