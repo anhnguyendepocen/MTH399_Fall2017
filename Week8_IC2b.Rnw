@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\begin{document}
+
+\section*{Single-factor ANOVA with two levels - equal variance at each level}
+Data characteristics:
+\par\vspace{0.4 cm}
+\begin{itemize}
+\item Data is classified by two levels of a single factor
+\item Error variance is the same at both levels
+\end{itemize}
+
+<<>>=
+getwd()
+
+df = read.csv('single_factor_anova_two_levels.csv')
+
+str(df)
+
+y = df$y
+
+lvl = df$lvl
+
+L=2
+N=length(y)
+@
+
+Call STAN
+<<>>=
+library(rstan)                                #make sure rstan is available
+rstan_options(auto_write = TRUE)              #use multiple cores
+options(mc.cores = parallel::detectCores())   #if we have them
+stanfit<-stan("ANOVA_example_1way_2levels.stan")       #call STAN using defaults
+print(stanfit)
+@
+
+<<>>=
+pd = extract(stanfit)
+
+str(pd)
+@
+
+Based on the posterior draw, What is the estimated probability that $\alpha_2$ is greater than $\alpha_1$?
+
+Hint:  try \texttt{mean(pd$alpha[,2] > pd$alpha[,1])}
+
+Why do you need a comma before the subscript for $\alpha$?
+
+<<>>=
+
+@
+
+\end{document}
