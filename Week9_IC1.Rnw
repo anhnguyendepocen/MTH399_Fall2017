@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{float}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+
+\begin{document}
+\section*{Week9\_IC1 - Generative Models}
+The psychometric discipline \textbf{Item Response Theory} (IRT) uses statistical models to calibrate standardized tests.
+\par\vspace{0.3 cm}
+The Massachusetts Comprehensive Assessment System (MCAS), a battery of standardized tests in English, mathematics, and science, is calibrated using IRT.
+\par\vspace{0.3 cm}
+A question with two possible answers (usually "true" and "false") is called dichotomous.
+\par\vspace{0.3 cm}
+The particular IRT model the MCAS uses for dichotomous questions is documented on page 59 of the 2014 MCAS and MCAS-Alt Technical Report:
+\par\vspace{0.3 cm}
+\href{http://www.mcasservicecenter.com/documents/MA/Technical%20Report/2014/2014%20MCAS%20%20MCAS%20Alt%20Tech%20Report.pdf}{2014 MCAS and MCAS-Alt Technical Report}
+\par\vspace{0.3 cm}
+Here is an image of the page that defines the model for dichotomous questions:
+\par\vspace{0.3 cm}
+
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.5]{3PL.png}
+    \caption{The MCAS 3PL model for dichotomous questions. \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+The calibration process consists of estimating the values of the parameters $a$, $b$, and $c$. 
+\par\vspace{0.3 cm}
+This is done by placing the question as a non-scoring item on the previous year's test.
+\par\vspace{0.3 cm}
+Estimated values for parameters are published in Appendix H of the MCAS and MCAS-Alt Technical Report:
+\par\vspace{0.3 cm}
+\href{http://www.mcasservicecenter.com/documents/MA/Technical%20Report/2014/Appendices/Appendix%20H%20-%20IRT%20Parameters.pdf}{2014 MCAS and MCAS-Alt Technical Report - Appendix H - IRT Parameters}
+\par\vspace{0.3 cm}
+In this problem, we will be using values from the table of IRT parameters for the 2014 MCAS $8^{th}$ grade mathematics test, which are on page 16 of Appendix H:
+\par\vspace{0.3 cm}
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.35]{IRT.png}
+    \caption{2014 MCAS Eigth Grade mathematics IRT parameters. \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+\section*{Instructions}
+Write an R program to implement a generative model for items \textbf{296756} and \textbf{298200} 
+from the 2014 MCAS eigth grade mathematics test, and use it to simulate a grade-sized cohort of 70,000 responses to each of these questions.
+\par\vspace{0.3 cm}
+We want to allow for measurement error in the IRT parameters, so you should treat them as (Gaussian) random variables with the means and standard deviations specified in Appendix H.
+\par\vspace{0.3 cm}
+Your program should produce:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item A vector of 70,000 simulated values for the parameter $a$
+\item A vector of 70,000 simulated values for the parameter $b$
+\item A vector of 70,000 simulated values for the parameter $c$
+\item A vector of 70,000 simulated values for $P(1|\theta,\eta)$ computed using the 3PL formula
+\item A vector of 70,000 simulated Bernoulli trials representing the student responses
+\item The proportion of correct responses for each question
+\end{itemize}
+\par\vspace{0.3 cm}
+The student ability parameter $\theta$ is assumed to have a standard normal distribution in the population of students taking the test (You will need to generate 70,000 values here too, use the same $\theta$ values for both questions).
+\par\vspace{0.3 cm}
+You should be able to accomplish this without writing any \texttt{for} loops.
+
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
