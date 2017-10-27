@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+
+D = 1.701
+
+a  = 1.52994
+
+b  = -0.67432
+
+c  = 0.46367
+
+N = 4000
+
+theta = seq(-100,100)/25
+
+xp = exp(D*a*(theta-b))
+
+p = c + (1-c)*xp/(1+xp)
+
+plot(p~theta,type='l')
+
+va = c(1.26284, 0.82674, 1.08496 )
+vb = c(-0.96301, -1.83030, -0.29272)
+vc = c(0.22032, 0.59975, 0.19022)
+
+for (i in 1:length(va)){
+  xp = exp(D*va[i]*(theta-b[i]))
+  p  = c + (1-c)*xp/(1+xp)
+  lines(p~theta)
+}
+@
+
+
+
+\end{document}

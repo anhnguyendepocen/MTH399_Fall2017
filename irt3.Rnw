@@ -1,0 +1,28 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+
+D = 1.701
+
+a  = 2.52994
+
+b  = -0.67432
+
+c  = 0.46367
+
+N = 4000
+
+theta = seq(-100,100)/25
+
+xp = exp(D*a*(theta-b))
+
+p = c + (1-c)*xp/(1+xp)
+
+plot(p~theta,type='l',ylim=c(0,1))
+@
+
+
+
+\end{document}
