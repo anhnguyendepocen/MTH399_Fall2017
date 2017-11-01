@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{float}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+
+\begin{document}
+
+\section*{Covariance models - a case study}
+
+Suppose we are interested in analyzing gas mileage by type of vehicle.
+
+We have the 2009 EPA mileage data, which classifies each vehicle as either a car or truck.
+
+First read the 2009 EPA mileage data, which is in a .csv file, and display its structure:
+
+<<>>=
+df = read.csv('epa.csv')      #get 2009 EPA mileage data
+
+str(df)
+@
+
+To simplify the analysis, we'll just look at the highway mileage records.
+
+<<>>=
+hwy = df[df$C.H=='H',]        #select only C.H='H'
+@
+
+Let's check how many rows we got:
+
+<<>>=
+nrow(hwy)
+@
+
+
+make local copies of the columns of interest for convenience
+
+For ease of interpretation, we'll scale the vehicle weight, which is in pounds, to units of 1,000 pounds.
+
+<<>>=
+y    = hwy$mpg                         #miles per gallon
+x    = hwy$etw/1000                    #vehicle weight in units of 1,000 pounds
+lvl  = as.numeric(hwy$car.truck)        #classification - car 'C' or truck 'T'
+N = length(y)
+L=2
+@
+
+<<>>=                                      #standard setup for Stan
+library(rstan)
+library(bayesplot)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+@
+
+<<>>=
+stanfit = stan("covariance.stan")         #call stan to fit the model
+
+print(stanfit)                           #print a summary of the results
+@
+
+<<>>=
+
+pd=extract(stanfit)       #extract the posterior draw values
+
+str(pd)                                  #show the structure of the posterior draw
+
+@
+
+<<>>=
+print(get_stanmodel(stanfit))
+@
+
+<<>>=
+Sys.info()[["user"]]
+@
+\end{document}

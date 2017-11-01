@@ -1,0 +1,162 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{float}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+
+\begin{document}
+
+\section*{Covariance models - a case study}
+
+Suppose we are interested in analyzing gas mileage by type of vehicle.
+
+We have the 2009 EPA mileage data, which classifies each vehicle as either a car or truck.
+
+First read the 2009 EPA mileage data, which is in a .csv file, and display its structure:
+
+<<>>=
+df = read.csv('epa.csv')      #get 2009 EPA mileage data
+
+str(df)
+@
+
+To simplify the analysis, we'll just look at the highway mileage records.
+
+<<>>=
+hwy = df[df$C.H=='H',]        #select only C.H='H'
+@
+
+Let's check how many rows we got:
+
+<<>>=
+nrow(hwy)
+@
+
+
+make local copies of the columns of interest for convenience
+
+For ease of interpretation, we'll scale the vehicle weight, which is in pounds, to units of 1,000 pounds.
+
+<<>>=
+mpg = hwy$mpg                         #miles per gallon
+etw = hwy$etw/1000                    #vehicle weight in units of 1,000 pounds
+CT  = as.factor(hwy$car.truck)        #classification - car 'C' or truck 'T'
+@
+
+Let's explore the data a bit.
+
+First try a boxplot of mpg by car/truck category
+
+<<>>=
+boxplot(mpg ~ CT)
+@
+
+It looks like trucks have lower mileage than cars.
+
+We can check the means by category:
+
+<<>>=
+tapply(mpg,CT,mean)
+@
+
+Our standard tool for analyzing means across subgroups is the one-way ANOVA, in this case with two levels.
+
+<<>>=
+aov1 = aov(mpg ~ CT)
+summary(aov1)
+@
+
+With two levels, there is no need for the \texttt{TukeyHSD} followup test, there is only one possible comparison.
+
+The estimated difference between cars and trucks is the difference in the fitted values: (this should be the same as the difference in the respective means for cars and trucks)
+
+<<>>=
+table(aov1$fitted.values)
+@
+
+Part of a throrough analysis is checking for any systematic departures from the model.
+
+These may indicate something else that you need to include.
+
+The place to start is with the residuals from the ANOVA.
+
+First, we have to find them in the output from \texttt{AOV}
+
+<<>>=
+str(aov1)
+@
+
+Now we plot them by themselves
+
+<<>>=
+plot(aov1$residuals)
+@
+
+Nothing jumps out, but maybe there is another predictor we missed.  
+
+Let's try plotting the residuals against weight:
+
+<<>>=
+plot(aov1$residuals~etw)
+@
+
+OK, there is a pretty clear pattern here, lighter vehicles tend to have positive residuals, meaning the fitted value is too low, while heavier ones have negative residuals, meaning the fitted value is too high.
+
+This kind of systematic error indicates that maybe we should look at the effect of weight in addition to the classification as car or truck.
+
+A boxplot will confirm that the trucks in the sample are heavier, though there is not a clear separation.
+<<>>=
+boxplot(etw ~ CT)
+@
+
+Let's try predicting highway mileage just from weight:
+
+<<>>=
+lm1 = lm(mpg~etw)
+summary(lm1)
+@
+
+Let's see if the residuals from the simple regression on weight differ by car/truck
+
+<<>>=
+boxplot(lm1$residuals~CT)
+
+tapply(lm1$residuals,CT,sd)
+@
+
+It looks like there isn't much difference in the mean of the residuals for cars and trucks.
+
+This suggests maybe the difference we got in the ANOVA is a result of trucks being heavier, not some inherent difference in performance between cars and trucks.
+
+One way to solve this is to include both car/truck and weight in the model.  This is somethimes called an analysis of covariance (ANCOVA) or a ANOVA with a covariate.
+
+It's very easy to set up.
+<<>>=
+lm2 = lm(mpg~as.factor(CT)+etw)
+
+summary(lm2)
+@
+
+The fitted values in this type of model lie on two regression lines with a common slope but possibly different intercepts.
+
+In this case, the point estimate of the slope is -6.6, indicating that for both cars and trucks, each 1,000 pounds of weight reduces highway mileage by 6.6 mpg.
+
+The intercepts for the two lines are 61.06 for cars, and 61.06-.475 for trucks.  
+
+The difference in the intercepts is interpreted as the difference between a car and a truck that have the same weight.
+
+This is sometimes described as the difference between cars and trucks adjusted for the weight.
+
+In this case, we see that the difference is not statistically significant.
+
+So, while it is true that cars get better highway gas mileage than trucks, the difference is due to the fact that on average trucks are heavier.
+
+If you compare a car and a truck that weigh the same, there is not much difference in highway mileage.
+<<>>=
+plot(lm2$fitted.values ~ etw)
+
+@
+\end{document}
