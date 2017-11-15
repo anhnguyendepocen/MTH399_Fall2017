@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+df = read.table("body.dat.txt")
+str(df)
+
+y             = df$V23
+x             = df$V24
+
+N             = nrow(df)
+@
+
+<<>>=
+boxplot(y)
+@
+
+Call STAN for Bayesian model
+<<>>=
+library(rstan)                                #make sure rstan is available
+rstan_options(auto_write = TRUE)              #use multiple cores
+options(mc.cores = parallel::detectCores())   #if we have them
+
+stanfit<-stan("simple_regression.stan")     #call STAN using defaults
+print(stanfit)
+print(get_stanmodel(stanfit))
+@
+
+
+<<>>=
+pd<-extract(stanfit)
+
+str(pd)
+
+y1 = pd$beta[1,1]+ x*pd$beta[1,2]
+
+plot(y1~x,type='l')
+
+for (i in 2:20){
+  y1 = pd$beta[i,1] + x*pd$beta[i,2]
+  lines(y1~x)
+}
+
+@
+
+\end{document}
