@@ -1,0 +1,40 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+df = read.csv("epa.csv")
+str(df)
+@
+
+<<>>=
+boxplot(df$mpg)
+@
+
+Call STAN for Bayesian model
+<<>>=
+library(rstanarm)                                #make sure rstan is available
+#rstan_options(auto_write = TRUE)              #use multiple cores
+#options(mc.cores = parallel::detectCores())   #if we have them
+
+stanreg <- stan_glm(mpg ~ etw,
+                        data = df, family=gaussian)
+
+summary(stanreg)
+
+prior_summary(stanreg)
+
+posterior_interval(stanreg)
+
+pp_check(stanreg)
+
+ppf = posterior_predict(stanreg, draws=3)
+str(ppf)
+df$mpg[1:10]
+ppf[1,1:10]
+ppf[2,1:10]
+ppf[3,1:10]
+
+@
+
+\end{document}
