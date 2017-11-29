@@ -1,0 +1,28 @@
+\documentclass{article}
+
+\begin{document}
+
+\section*{Reading a file from a URL connection}
+
+<<>>=
+hsb2 <- within(read.csv("https://stats.idre.ucla.edu/stat/data/hsb2.csv"), {
+    race <- as.factor(race)
+    schtyp <- as.factor(schtyp)
+    prog <- as.factor(prog)
+})
+
+attach(hsb2)
+@
+
+<<>>=
+str(hsb2)
+@
+
+<<>>=
+summary(hsb2)
+
+boxplot(hsb2)
+@
+
+
+\end{document}
