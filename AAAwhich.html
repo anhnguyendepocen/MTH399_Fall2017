@@ -1,0 +1,72 @@
+<html><body>
+<h2>MTH399 Fall 2017 Linear Models Crib Sheet</h2>
+<br>
+<table border="1">
+<tr>
+<td>Model</td>
+<td>Fitted Values</td>
+<td>Frequentist Example</td>
+<td>Bayesian Example</td>
+<td>Stan model file</td>
+<td>Description</td>
+</tr>
+<tr>
+<td>Mean-only<br><br><img src="eq1.png" width="90" height="25"></td>
+<td><img src="mean_only.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="stan_models.html#1sampt">normal.stan</a></td>
+<td>Mean only</td>
+</tr>
+<tr>
+<td>Simple regression<br><br><img src="eq2.png" width="160" height="23"></td>
+<td><img src="simplereg.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#simpreg">R code</a></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="stan_models.html#simpreg">simple_regression.stan</a></td>
+<td>Simple regression</td>
+</tr>
+<tr>
+<td>One-way ANOVA 3 levels<br><br><img src="eq3.png" width="240" height="23"></td>
+<td><img src="oneway_three_levels.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#1way3lvl">R code</a></td>
+<td><a href="r_frequentist.html#1way3lvl">R code</a></td>
+<td><a href="stan_models.html#1wayanov">one_way_anova.stan</a></td>
+<td>One-way ANOVA</td>
+</tr>
+<tr>
+<td>Two-way ANOVA no interaction<br><br><img src="eq4.png" width="300" height="23"></td>
+<td><img src="twoway_noint.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#2waynoint">R code</a></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="stan_models.html#2waynoint">two_factor_anova_without_interaction_general.stan</a></td>
+<td>Two-way no interaction</td>
+</tr>
+<tr>
+<td>Two-way ANOVA with interaction<br><br><img src="eq5.png" width="350" height="80"></td>
+<td><img src="twoway_int.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#2wayint">R code</a></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="stan_models.html#2wayint">two_factor_anova_with_interaction.stan</a></td>
+<td>two-way with interaction</td>
+</tr>
+<tr>
+<td>Covariance - common slope<br><br><img src="eq6.png" width="200" height="23"></td>
+<td><img src="covariance.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#ancoveq">R code</a></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="stan_models.html#2wayint">two_factor_anova_with_interaction.stan</a></td>
+<td>covariance - equal slopes</td>
+</tr>
+<tr>
+<td>Covariance - unequal slopes<br><br><img src="eq7.png" width="320" height="23"></td>
+<td><img src="covariance2.png" width="200" height="150"></td>
+<td><a href="r_frequentist.html#ancovneq">R code</a></td>
+<td><a href="r_frequentist.html#1sampt">R code</a></td>
+<td><a href="stan_models.html#2wayint">two_factor_anova_with_interaction.stan</a></td>
+<td>covariance - unequal slopes</td>
+</tr>
+
+
+</table>
+</body></html>
