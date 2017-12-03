@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{float}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+
+\begin{document}
+\section*{MTH399 Final - Fall2017}
+The psychometric discipline \textbf{Item Response Theory} (IRT) uses statistical models to calibrate standardized tests.
+\par\vspace{0.3 cm}
+The Massachusetts Comprehensive Assessment System (MCAS), a battery of standardized tests in English, mathematics, and science, is calibrated using IRT.
+\par\vspace{0.3 cm}
+The IRT models the MCAS uses are documented on page 59 of the 2014 MCAS and MCAS-Alt Technical Report:
+\par\vspace{0.3 cm}
+\href{http://www.mcasservicecenter.com/documents/MA/Technical%20Report/2014/2014%20MCAS%20%20MCAS%20Alt%20Tech%20Report.pdf}{2014 MCAS and MCAS-Alt Technical Report}
+\par\vspace{0.3 cm}
+Here is a description of the various IRT models used in the 2014 MCAS:
+\par\vspace{0.3 cm}
+\textit{"For the 2014 MCAS, the graded-response model (GRM) was used for polytomous items (Nering \& Ostini, 2010) for all grade and content area combinations. The three-parameter logistic (3PL) model 
+was used for dichotomous items for all grade and content area combinations except high school 
+technology/engineering, which used the one-parameter logistic (1PL) model (Hambleton \& van der Linden, 1997; Hambleton, Swaminathan, \& Rogers, 1991). The 1PL model was chosen for high school technology/engineering because there was concern that the tests might have too few  examinees to support the 3PL model in future administrations."
+}
+\par\vspace{0.3 cm}
+
+We previously examined the 3PL model used for dichotomous items.  This time we will do a similar examination of the graded-response model (GRM) used for polytomous items (i.e, problems for which scores are not binary but contain three or more possible values).
+\par\vspace{0.3 cm}
+Here is an image from the page in the technical report that defines the GRM model, which spans several pages in the technical report:
+\par\vspace{0.3 cm}
+
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.5]{GRM1.png}
+    \caption{The MCAS GRM model for polytomous questions. \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.5]{GRM2.png}
+    \caption{The MCAS GRM model for polytomous questions(continued). \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+
+\par\vspace{0.3 cm}
+
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.5]{GRM3.png}
+    \caption{The MCAS GRM model for polytomous questions(continued). \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+
+\par\vspace{0.3 cm}
+
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.5]{GRM4.png}
+    \caption{The MCAS GRM model for polytomous questions(continued). \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+
+\par\vspace{0.3 cm}
+
+\begin{program}
+  \begin{figure}[H]
+    \includegraphics[scale=0.5]{GRM5.png}
+    \caption{The MCAS GRM model for polytomous questions(continued). \label{fig:test}}
+  \end{figure}
+\end{program}
+\par\vspace{0.3 cm}
+
+\pagebreak
+
+The calibration process consists of estimating the values of the parameters $a$ and $b$, plus the $d_i$ values.  There is no guessing correction ($c$) for polytomous items. 
+\par\vspace{0.3 cm}
+This is done by placing the question as a non-scoring item on the previous year's test.
+\par\vspace{0.3 cm}
+Estimated values for parameters are published in Appendix H of the MCAS and MCAS-Alt Technical Report:
+\par\vspace{0.3 cm}
+\href{http://www.mcasservicecenter.com/documents/MA/Technical%20Report/2014/Appendices/Appendix%20H%20-%20IRT%20Parameters.pdf}{2014 MCAS and MCAS-Alt Technical Report - Appendix H - IRT Parameters}
+\par\vspace{0.3 cm}
+In this problem, we will be using values from the table of IRT parameters for the 2014 MCAS $8^{th}$ grade and $3^{rd}$ grade mathematics tests.
+\par\vspace{0.3 cm}
+\section*{Instructions}
+Write an R program to implement a generative model for item \textbf{285090} 
+from the 2014 MCAS eigth grade mathematics test, and use it to simulate a grade-sized cohort of 70,000 responses to each of these questions.
+\par\vspace{0.3 cm}
+Write an R program to implement a generative model for item \textbf{293506} 
+from the 2014 MCAS third grade mathematics test, and use it to simulate a grade-sized cohort of 70,000 responses to each of these questions.
+\par\vspace{0.3 cm}
+We want to allow for measurement error in the IRT parameters, so you should treat them as (Gaussian) random variables with the means and standard deviations specified in Appendix H.
+\par\vspace{0.3 cm}
+Your program should produce:
+\par\vspace{0.3 cm}
+\begin{itemize}
+\item A vector of 70,000 simulated values for the parameter $a$
+\item A vector of 70,000 simulated values for the parameter $b$
+\item Vectors of 70,000 simulated values for each of the parameters $d_i$
+\item A vector of 70,000 simulated values for $P(k|\theta,\eta)$ computed using the GRM formula
+\item A vector of 70,000 simulated trials representing the student responses
+\item The proportion of responses for each possible score question
+\item A graph of the item characteristic curve (ICC) for the question (for $\theta\in(-4,4)$)
+\end{itemize}
+\par\vspace{0.3 cm}
+The student ability parameter $\theta$ is assumed to have a standard normal distribution in the population of students taking the test (You will need to generate 70,000 values here too, use the same $\theta$ values for both questions).
+
+<<>>=
+Sys.info()[["user"]]
+@
+
+\end{document}
